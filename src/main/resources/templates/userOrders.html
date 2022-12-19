@@ -1,0 +1,61 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>WP lab - Your orders</title>
+    <style type="text/css">
+        body {
+            width: 800px;
+            margin: auto;
+        }
+        table {
+            width:100%;
+        }
+        table, td, th {
+            border: 1px solid black;
+            padding: 3px 2px;
+        }
+    </style>
+</head>
+<body>
+<section>
+    <header>
+        <h1>Balloon Order page - Your orders</h1>
+    </header>
+    <th:block th:each="order : ${orders}">
+        <table>
+            <tr>
+                <th colspan="2">
+                    Order <th:block th:text="${order.id}"></th:block> Status
+                </th>
+            </tr>
+            <tr>
+                <td><b>User username</b></td>
+                <td th:text="${order.user.getUsername()}"></td>
+            </tr>
+            <tr>
+                <td><b>Balloon Color</b></td>
+                <td th:text="${order.balloon.name}"></td>
+            </tr>
+            <tr>
+                <td><b>Balloon Size</b></td>
+                <td th:text="${order.balloon.description}"></td>
+            </tr>
+            <tr>
+                <td><b>Balloon Manufacturer</b></td>
+                <td th:text="${order.balloon.manufacturer != null ? order.balloon.manufacturer.id + ' - ' + order.balloon.manufacturer.name : ''}"></td>
+            </tr>
+            <tr>
+                <td><b>Order Date Created</b></td>
+                <td th:text="${order.dateCreated != null ? order.dateCreated : ''}"></td>
+            </tr>
+        </table>
+        <br/>
+    </th:block>
+    <div>
+        <br/>
+        <a href="/balloons">Go to homepage</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="/logout">Log out</a>
+    </div>
+</section>
+</body>
+</html>

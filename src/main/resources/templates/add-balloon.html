@@ -1,0 +1,42 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title th:text="'Balloon Order page - ' + (${edit} ? 'Edit' : 'Add') + ' a Balloon'"></title>
+    <style type="text/css">
+        body {
+            width: 800px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Welcome to our Balloon Shop App</h1>
+</header>
+<main>
+    <h2>
+        <th:block th:text="${edit == true && balloon != null} ? 'Edit balloon ' + ${balloon.id} : 'Add a balloon'"></th:block>
+    </h2>
+
+    <form th:method="post" th:action="@{'/balloons/add'}">
+        <input type="hidden" id="id" name="id" th:value="${balloon != null} ? ${balloon.id} : null"/><br/><br/>
+        <label for="color">Color:</label><br/>
+        <input type="text" id="color" name="color" th:value="${balloon != null} ? ${balloon.name} : ''"/><br/><br/>
+        <label for="description">Description:</label><br/>
+        <textarea cols="40" rows="3" id="description" name="description" th:text="${balloon != null} ? ${balloon.description} : ''"></textarea><br/><br/>
+        <label for="manufacturerId">Manufacturer:</label><br/>
+        <select id="manufacturerId" name="manufacturerId">
+            <th:block th:each="manufacturer : ${manufacturers}">
+                <option th:value="${manufacturer.id}" th:text="${manufacturer.id + ' - ' + manufacturer.name}" th:selected="${balloon != null && balloon.manufacturer != null && balloon.manufacturer.id == manufacturer.id} ? true : false"></option>
+            </th:block>
+        </select>
+
+        <br/><br/>
+
+        <input type="submit" value="Submit"/>
+    </form>
+
+    <a href="/balloons">Go Back</a>
+</main>
+</body>
+</html>

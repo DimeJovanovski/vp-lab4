@@ -1,0 +1,78 @@
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>WP lab - Delivery Info</title>
+        <style type="text/css">
+            body {
+                width: 800px;
+                margin: auto;
+            }
+            table {
+                width: 100%;
+            }
+
+            table, td, th {
+                border: 1px solid black;
+                padding: 3px 2px;
+            }
+
+            section {
+                float: left;
+                margin: 0 1.5%;
+                width: 63%;
+            }
+
+            aside {
+                float: right;
+                margin: 0 1.5%;
+                width: 30%;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Balloon Order page - Delivery information </h1>
+        </header>
+
+        <h4 style="color: red;" th:if="${param.error != null && param.error.toString() == 'MissingAttributes'}">Please fill in all the details</h4>
+        <h4 style="color: red;" th:if="${param.error != null && param.error.toString() == 'BalloonDoesntExist'}">The balloon you are trying to buy doesn't exist</h4>
+
+        <section>
+
+            <form th:method="post" th:action="@{'/confirmationInfo'}">
+                <input id="color" type="hidden" name="color" th:value="${color}">
+
+                <label for="userId">User:</label><br/>
+                <select id="userId" name="userId">
+                    <th:block th:each="user : ${users}">
+                        <option th:value="${user.getId()}" th:text="${user.getId() + ' - ' + user.getUsername()}"></option>
+                    </th:block>
+                </select><br/><br/>
+
+                <label for="datetime_local">Order Date:</label><br/>
+                <input id="datetime_local" name="datetime_local" type="datetime-local"/><br/><br/>
+
+                <input type="submit" value="Submit"/>
+            </form>
+
+        </section>
+        <aside>
+            <table>
+                <tr>
+                    <th colspan="2">
+                        Your Order Status
+                    </th>
+                </tr>
+
+                <tr>
+                    <td><b>Balloon Color </b></td>
+                    <td th:text="${color}"></td>
+                </tr>
+                <tr>
+                    <td><b>Balloon Size </b></td>
+                    <td th:text="${size}"></td>
+                </tr>
+            </table>
+        </aside>
+    </body>
+</html>

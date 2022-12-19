@@ -1,0 +1,62 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <meta charset="utf-8">
+        <title>Balloon Order page - Welcome and choose a Balloon</title>
+        <style type="text/css">
+            body {
+                width: 800px;
+                margin: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Welcome to our Balloon Shop App</h1>
+        </header>
+        <main>
+            <h2>Search balloon:</h2>
+            <form th:method="post" th:action="@{'/balloons/search'}">
+                <input type="text" name="searchQuery" placeholder="Enter balloon name or description..."/>
+                <input type="submit" value="Submit"/>
+            </form>
+
+
+            <h2>Choose balloon color:</h2>
+
+            <h4 style="color: red;" th:if="${error == 'EditIdNotFound'}">Can't edit balloon <th:block th:text="${errorBalloonId}"></th:block> because it doesn't exist!</h4>
+            <h4 style="color: red;" th:if="${param.error != null && param.error.toString() == 'NoColorSelected'}">Please select a balloon</h4>
+            <h4 style="color: red;" th:if="${param.error != null && param.error.toString() == 'BalloonDoesntExist'}">The balloon that you tried to select doesn't exist</h4>
+
+            <form th:method="post" th:action="@{'/selectBalloon'}">
+                <th:block th:each="balloon : ${balloons}">
+                    <input type="radio" name="color" th:value="${balloon.name}"/>
+                    <th:block th:text="${' ' + balloon.name}"/>
+
+                    <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                        <a style="margin-left: 12px" th:href="@{'/balloon-forms/edit-balloon-form/{id}' (id=${balloon.id})}" class="edit-button">
+                            Edit
+                        </a>
+                    </th:block>
+
+                    <br/>
+                </th:block>
+
+                <br/>
+                <input type="submit" value="Submit"/>
+            </form>
+
+            <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                <a href="/balloon-forms/add-balloon-form" class="add-balloon-button">Add a balloon</a>
+            </th:block>
+            <br/><br/>
+
+            <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                <a href="/balloon-forms/delete-balloon-form" class="delete-balloon-button">Delete a balloon</a>
+            </th:block>
+
+            <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                <p th:text="${'(Deleted Balloons: ' + deletedBalloons + ')'}"></p>
+            </th:block>
+        </main>
+    </body>
+</html>

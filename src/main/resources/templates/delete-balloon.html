@@ -1,0 +1,29 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Balloon Order page - Delete a Balloon</title>
+    <style type="text/css">
+        body {
+            width: 800px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Welcome to our Balloon Shop App</h1>
+</header>
+<main>
+    <h2>Delete a balloon:</h2>
+
+    <th:block th:each="balloon : ${balloons}">
+        <form th:method="DELETE" th:action="@{'/balloons/delete/{id}' (id=${balloon.getId()})}">
+            <th:block th:value="${balloon.id}" th:text="${balloon.id + ' - ' + balloon.name}"></th:block>
+            <input type="submit" value="Delete"/>
+        </form>
+    </th:block>
+
+    <a href="/balloons">Go Back</a>
+</main>
+</body>
+</html>
